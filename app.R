@@ -1,10 +1,10 @@
 library(shiny)
-
 options(shiny.maxRequestSize = 12 * 1024^2)
+
 #User Interface
 ui <- fluidPage(
   titlePanel("Principal Component Analysis - Gene Expression Data"),
-  h4("Please choose the CSV files with the (1) input expression values (TPM/RPM/FPKM) and (2) metadata. Move the slider to adjust the lower percentage of variables based on variance to be removed."),
+  h4("Please choose the CSV files with the (1) input expression values (TPM/RPM/FPKM as rows, sample IDs as columns) and (2) metadata. Move the slider to adjust the lower percentage of variables based on variance to be removed."),
   sidebarLayout (
     sidebarPanel(
       h3("Input Parameters"),
@@ -17,7 +17,7 @@ ui <- fluidPage(
     ),
     
     mainPanel(
-    h1("PCA biplot"),
+    h1("PCA - Metadata, biplot and scree plot"),
     tabsetPanel(type = "tabs",
                 tabPanel("Metadata Table", tableOutput("meta_table")),
                 tabPanel("Biplot", plotOutput("biplot")),
@@ -49,10 +49,9 @@ server <- function(input, output) {
   }
   
   library(PCAtools)
-  mat<-read.csv(input$input_matrix$datapath, header=TRUE)
+  mat<-read.csv(input$input_matrix$datapath, header=TRUE) #Read matrix of TPM/RPM/FPKM values
   if (input$col1_genename) { mat[1]<-NULL}
   metamyel<-read.csv(input$input_metadata$datapath, header=TRUE, row.names=1)
-  #rownames(metamyel)<-metamyel[,1]
   colnames(mat)<-rownames(metamyel)
   p <- pca(mat, metadata = metamyel, removeVar = ((input$slider1)/100))
   req(input$group_name)
