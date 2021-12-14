@@ -6,3 +6,8 @@ Input: Two CSV files
 2. Metadata with the first column containing sample IDs
 
 Output: PCA biplot and scree plot
+
+
+To run the application on R:
+library(shiny)
+runGitHub( "PCA_GeneExpression", "vtbhat")
