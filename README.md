@@ -9,6 +9,6 @@ Output: PCA biplot and scree plot
 
 
 To run the application on R:
-library(shiny)
 
+library(shiny)
 runGitHub( "PCA_GeneExpression", "vtbhat")
